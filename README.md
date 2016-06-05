@@ -1,7 +1,7 @@
 # An Ubuntu user container
 A base Ubuntu docker container with a user named _developer_.
 
-This container uses `ubuntu:latest`, and has a user and some pre-installed tools.
+This container uses `ubuntu:14.04`, and has a user and some pre-installed tools.
 It's perfect for testing out stuff, if you just need a terminal.
 
 This container can also be used as a base for other containers that need a user.
@@ -19,6 +19,7 @@ I.e. your basic Ubuntu setup.
 ## Tools
 Some tools are pre-installed:
 * htop
+* nano
 * tmux
 
 ## Usage
@@ -26,3 +27,15 @@ Some tools are pre-installed:
 docker run -ti --rm peron/ubuntu-user
 ```
 
+### GUI
+If you want to test out applications that has a GUI, start the container using
+```
+docker run -ti --rm -e DISPLAY -e /tmp/.X11-unix:/tmp/.X11-unix:ro peron/ubuntu-user
+```
+
+## References
+Source for GUI related stuff:
+[Running GUI apps with Docker](http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker)
+
+Bash files base on:
+[jfrazelle/dotfiles](https://github.com/jfrazelle/dotfiles)

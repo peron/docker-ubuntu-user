@@ -1,4 +1,10 @@
-FROM ubuntu:latest
+FROM ubuntu:14.04
+
+RUN apt-get update && \
+    apt-get install -y \
+      htop \
+      nano \
+      tmux
 
 # Replace 1000 with your user / group id
 RUN export uid=1000 gid=1000 && \
@@ -15,13 +21,14 @@ ENV HOME /home/developer
 
 WORKDIR /home/developer
 
-RUN apt-get update && \
-    apt-get install -y \
-      htop \
-      tmux
+COPY .bash* /home/developer/
 
 ENTRYPOINT ["/bin/bash"]
 
 # Build with: docker build -t ubuntu-user .
 # Run with: docker run -ti --rm -u developer ubuntu-user
+# Source for user settings:
+#    http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/
+# Bash files based on:
+#    https://github.com/jfrazelle/dotfiles
 
