@@ -30,12 +30,18 @@ docker run -ti --rm peron/ubuntu-user
 ### GUI
 If you want to test out applications that has a GUI, start the container using
 ```
-docker run -ti --rm -e DISPLAY -e /tmp/.X11-unix:/tmp/.X11-unix:ro peron/ubuntu-user
+docker run -ti --rm -e DISPLAY -v /tmp/.X11-unix:/tmp/.X11-unix:ro peron/ubuntu-user
 ```
+for older (Ubuntu) systems, and
+```
+docker run -ti --rm --net=host -e "DISPLAY" -v "$HOME/.Xauthority:/root/.Xauthority:rw" peron/ubuntu-user
+```
+for newer (Ubuntu) systems.
 
 ## References
 Source for GUI related stuff:
 [Running GUI apps with Docker](http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker)
+[Running GUI Applications inside Docker Containers](https://medium.com/@SaravSun/running-gui-applications-inside-docker-containers-83d65c0db110)
 
 Bash files base on:
 [jfrazelle/dotfiles](https://github.com/jfrazelle/dotfiles)
