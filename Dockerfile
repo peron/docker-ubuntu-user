@@ -1,36 +1,24 @@
-FROM ubuntu:14.04
+FROM ubuntu:17.10
 
-MAINTAINER peron <per.junel@gmail.com>
-
-RUN apt-get update && \
-    apt-get install -y \
-      htop \
-      nano \
-      tmux
+LABEL maintainer="Per Junel <per.junel@gmail.com>"
 
 # Replace 1000 with your user / group id
 RUN export uid=1000 gid=1000 && \
-    mkdir -p /home/developer && \
-    echo "developer:x:${uid}:${gid}:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
-    echo "developer:x:${uid}:" >> /etc/group && \
-    echo "developer ALL=(ALL) NOPASSWD: ALL" > /etc/sudoers.d/developer && \
-    chmod 0440 /etc/sudoers.d/developer && \
-    chown ${uid}:${gid} -R /home/developer
+     mkdir -p /home/developer && \
+     echo "developer:x:${uid}:${gid}:Developer,,,:/home/developer:/bin/bash" >> /etc/passwd && \
+     echo "developer:x:${uid}:" >> /etc/group && \
+     chown ${uid}:${gid} -R /home/developer
+
+WORKDIR /tmp/
 
 USER developer
 
 ENV HOME /home/developer
 
-WORKDIR /home/developer
+VOLUME /home/developer
 
-COPY .bash* /home/developer/
+CMD ["/bin/bash"]
 
-ENTRYPOINT ["/bin/bash"]
-
-# Build with: docker build -t ubuntu-user .
-# Run with: docker run -ti --rm -u developer ubuntu-user
-# Source for user settings:
-#    http://fabiorehm.com/blog/2014/09/11/running-gui-apps-with-docker/
-# Bash files based on:
-#    https://github.com/jfrazelle/dotfiles
+# Run with
+# docker run --net=host --env="DISPLAY" --volume="$HOME/.Xauthority:/root/.Xauthority:rw" -v $HOME:/home/developer/ --name ubuntu-user -it --rm peron/ubuntu-user:17.10
 
